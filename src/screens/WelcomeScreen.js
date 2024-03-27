@@ -4,11 +4,11 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useNavigation } from '@react-navigation/native'; // Tambahkan impor useNavigation
 
 export default function WelcomeScreen() {
-  const navigation = useNavigation(); // Gunakan useNavigation di sini
+  const navigation = useNavigation();
 
   useEffect(()=>{
     setTimeout(()=> navigation.navigate('MainHome'), 2500)
-  }, [navigation]) // Tambahkan navigation ke dalam array dependencies useEffect
+  }, [navigation])
 
   return (
     <View style={styles.container}>
@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: wp(50), // Menggunakan widthPercentageToDP untuk membuat lebar responsif
-    height: wp(50), // Menggunakan widthPercentageToDP untuk membuat tinggi responsif
+    width: wp(50),
+    height: wp(50),
     borderRadius: 5,
   },
   text: {
     fontWeight: 'bold',
-    fontSize: wp(6), // Menggunakan widthPercentageToDP untuk membuat ukuran font responsif
-    marginTop: 20, // Margin to separate image and text
+    fontSize: wp(6),
+    marginTop: 20,
   },
 });

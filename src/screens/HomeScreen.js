@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Categories from '../components/Categories';
 import SeacrhBar from '../components/home/SeacrhBar';
 import Bookmark from './Bookmark';
 
-export default function HomeScreen() {
+const HomeScreen = () => {
     const [bookmarkedBooks, setBookmarkedBooks] = useState([]);
 
     const handleBookmark = (book) => {
@@ -13,29 +13,61 @@ export default function HomeScreen() {
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <View style={styles.container}>
             <ScrollView
                 showVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 50, paddingTop: hp(0) }}
-                style={{ paddingVertical: hp(2) }}>
+                contentContainerStyle={styles.scrollViewContent}
+                style={styles.scrollView}>
 
-                <View>
+                <View style={styles.searchBarContainer}>
                     <SeacrhBar setSearchText={(value) => console.log(value)} />
                 </View>
 
                 {/* Content lainnya */}
-                <View style={{ marginHorizontal: 10, marginBottom: 20 }}>
-                    <Text style={{ fontSize: hp(2) }}>Hello Fatiq</Text>
+                <View style={styles.contentContainer}>
+                    <Text style={styles.greetingText}>Hello Fatiq</Text>
                     <View>
-                        <Text style={{ fontSize: hp(3) }}>Pilih Buku Sesuai Selera Anda</Text>
+                        <Text style={styles.titleText}>Pilih Buku Sesuai Selera Anda</Text>
                     </View>
                 </View>
 
                 {/*Content */}
-                <View>
+                <View style={styles.categoriesContainer}>
                     <Categories handleBookmark={Bookmark} />
                 </View>
             </ScrollView>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+    },
+    scrollView: {
+        paddingVertical: hp(2),
+    },
+    scrollViewContent: {
+        paddingBottom: 50,
+        paddingTop: hp(0),
+    },
+    searchBarContainer: {
+        marginHorizontal: 10,
+    },
+    contentContainer: {
+        marginHorizontal: 10,
+        marginBottom: 20,
+    },
+    greetingText: {
+        fontSize: hp(2),
+    },
+    titleText: {
+        fontSize: hp(3),
+    },
+    categoriesContainer: {
+        marginHorizontal: 10,
+    },
+});
+
+export default HomeScreen;

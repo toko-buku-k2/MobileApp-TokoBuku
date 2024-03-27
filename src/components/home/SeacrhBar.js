@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Alert, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Colors from '../../assets/Colors/Colors';
-import { bookData } from '../../constants';
+import { dataBuku } from '../../api';
 
 export default function SearchBar({ setSearchText, navigation }) {
   const [searchInput, setSearchInput] = useState('');
 
   const handleSearch = () => {
-    const foundItem = bookData.find(item => item.title.toLowerCase().includes(searchInput.toLowerCase()));
+    const foundItem = dataBuku.find(item => item.title.toLowerCase().includes(searchInput.toLowerCase()));
     if (foundItem) {
       setSearchText(foundItem.title);
       Alert.alert(

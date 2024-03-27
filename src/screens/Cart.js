@@ -1,9 +1,43 @@
-import React from 'react';
-import { View, Text, Image, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, FlatList, AsyncStorage } from 'react-native';
 import Colors from '../assets/Colors/Colors';
-import { cartData } from '../constants'; 
+import { chartData } from '../api';
 
 export default function Cart() {
+  const [cartData, setCartData] = useState([]);
+
+  useEffect(() => {
+    // Fungsi untuk mendapatkan data belanja dari AsyncStorage saat komponen dimuat
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('@cartData');
+        if (jsonValue !== null) {
+          // Parse data dari AsyncStorage jika ada
+          const data = JSON.parse(jsonValue);
+          setCartData(data);
+        }
+      } catch (error) {
+        console.error('Error reading cart data from AsyncStorage:', error);
+      }
+    };
+
+    getData();
+  }, []);
+
+  // Fungsi untuk menyimpan data belanja ke AsyncStorage setiap kali ada perubahan pada cartData
+  useEffect(() => {
+    const saveData = async () => {
+      try {
+        const jsonValue = JSON.stringify(cartData);
+        await AsyncStorage.setItem('@cartData', jsonValue);
+      } catch (error) {
+        console.error('Error saving cart data to AsyncStorage:', error);
+      }
+    };
+
+    saveData();
+  }, [cartData]);
+
   const renderItem = ({ item }) => (
     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
       <Image
@@ -24,7 +58,7 @@ export default function Cart() {
       <FlatList
         data={cartData}
         renderItem={renderItem}
-        keyExtractor={(item) => item.ISBN.toString()}
+        keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
       />
     </View>

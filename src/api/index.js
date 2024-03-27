@@ -1,22 +1,44 @@
-function dataBuku(callback){
-  fetch('http://10.2.3.181:5127/buku',{
+// function dataBuku(callback){
+//   fetch('http://10.2.0.57:5127/buku',{
+//     method: 'GET',
+//     headers: {
+      
+//       'Content-Type': 'application/json'
+//     }
+//   }).then(respone=>{
+//       if(!respone.ok){
+//         throw new Error('Response')
+//       }
+//       return respone.json();
+//   }).then(data=>{
+//     console.log(data);
+//     callback(data);
+//   }).catch(err=>{console.log(err)});
+// }
+
+// export {dataBuku}
+
+// API.js
+function dataBuku(callback) {
+  fetch('http://10.2.0.57:5127/buku', {
     method: 'GET',
     headers: {
-      
       'Content-Type': 'application/json'
     }
-  }).then(respone=>{
-      if(!respone.ok){
-        throw new Error('Response')
-      }
-      return respone.json();
-  }).then(data=>{
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error('Response')
+    }
+    return response.json();
+  }).then(data => {
     console.log(data);
     callback(data);
-  }).catch(err=>{console.log(err)});
+  }).catch(err => { console.log(err) });
 }
 
-export {dataBuku}
+export { dataBuku };
+
+
 // export const bookData = [
 //     {
 //         ISBN: 9789000307975,
