@@ -1,58 +1,31 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { profilStyles } from '../components/Style';
 
 export default function Profil() {
   return (
-    <View style={styles.container}>
-      <View style={styles.profileContainer}>
+    <View style={profilStyles.container}>
+      <View style={profilStyles.profileContainer}>
         <Image
-          source={require('../assets/image/profile.jpg')}
-          style={styles.profileImage}
+          source={require('../assets/image/profile.png')}
+          style={profilStyles.profileImage}
         />
       </View>
-      <View style={styles.infoContainer}>
-        <View style={styles.infoItem}>
+      <View style={profilStyles.infoContainer}>
+        <View style={profilStyles.infoItem}>
           <MaterialIcons name="person" size={24} color="black" />
-          <Text style={styles.infoText}>Username: FreyaJayawardana</Text>
+          <Text style={profilStyles.infoText}>Username: FreyaJayawardana</Text>
         </View>
-        <View style={styles.infoItem}>
+        <View style={profilStyles.infoItem}>
           <MaterialIcons name="email" size={24} color="black" />
-          <Text style={styles.infoText}>Email: freyyya@gmail.com</Text>
+          <Text style={profilStyles.infoText}>Email: freyyya@gmail.com</Text>
         </View>
-        <View style={styles.infoItem}>
+        <View style={profilStyles.infoItem}>
           <MaterialIcons name="phone" size={24} color="black" />
-          <Text style={styles.infoText}>Telephone: +628135442190</Text>
+          <Text style={profilStyles.infoText}>Telephone: +628135442190</Text>
         </View>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  profileContainer: {
-    marginBottom: 20,
-  },
-  profileImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-  },
-  infoContainer: {
-    alignItems: 'center',
-  },
-  infoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  infoText: {
-    marginLeft: 10,
-    fontSize: 16,
-  },
-});

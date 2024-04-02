@@ -1,26 +1,5 @@
-// function dataBuku(callback){
-//   fetch('http://10.2.0.57:5127/buku',{
-//     method: 'GET',
-//     headers: {
-      
-//       'Content-Type': 'application/json'
-//     }
-//   }).then(respone=>{
-//       if(!respone.ok){
-//         throw new Error('Response')
-//       }
-//       return respone.json();
-//   }).then(data=>{
-//     console.log(data);
-//     callback(data);
-//   }).catch(err=>{console.log(err)});
-// }
-
-// export {dataBuku}
-
-// API.js
 function dataBuku(callback) {
-  fetch('http://10.2.0.57:5127/buku', {
+  fetch('http://10.2.2.76:5127/buku', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -37,7 +16,6 @@ function dataBuku(callback) {
 }
 
 export { dataBuku };
-
 
 // export const bookData = [
 //     {

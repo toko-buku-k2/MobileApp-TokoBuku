@@ -3,6 +3,7 @@ import { View, Text, TextInput, Alert, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Colors from '../../assets/Colors/Colors';
 import { dataBuku } from '../../api';
+import { srchStyle } from '../Style';
 
 export default function SearchBar({ setSearchText, navigation }) {
   const [searchInput, setSearchInput] = useState('');
@@ -25,24 +26,14 @@ export default function SearchBar({ setSearchText, navigation }) {
   };
 
   return (
-    <View style={{ marginTop: 10, marginHorizontal: 10 }}>
-      <View style={{
-        display: 'flex',
-        marginBottom: 20,
-        flexDirection: 'row',
-        gap: 10,
-        alignItems: 'center',
-        borderWidth: 0.7,
-        borderColor: Colors.gray,
-        padding: 8,
-        borderRadius: 10,
-      }}>
+    <View style={srchStyle.container}>
+      <View style={srchStyle.searchContainer}>
         <AntDesign name="search1" size={24} color={Colors} />
         <TextInput
           placeholder='Search'
           onChangeText={(value) => setSearchInput(value)}
           onSubmitEditing={handleSearch}
-          style={{ flex: 1 }}
+          style={srchStyle.input}
         />
       </View>
     </View>

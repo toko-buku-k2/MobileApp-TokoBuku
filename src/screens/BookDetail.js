@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, Image, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScrollView, Image, View, Text, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Colors from '../assets/Colors/Colors';
 import { dataBuku } from '../api';
+import { bkdtlStyles } from '../components/Style';
+import { insertBookmark, removeBookmark, selectBookmark } from '../database/index1';
 
 export default function BookDetail({ route, navigation }) {
   const { item } = route.params;
-  const [isBookmarked, setIsBookmarked] = useState(item.isBookmarked);
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const [dataBukuAPI, setDataBukuAPI] = useState(null);
 
   useEffect(() => {
     const fetchDataBuku = async () => {
       try {
-        const response = await fetch("http://10.2.0.57:5127/buku");
+        const response = await fetch("http://10.2.2.76:5127/buku/"+item.id);
         if (!response.ok) {
           throw new Error("Network response was not ok");
-        }
+        } 
         const data = await response.json();
         console.log(data);
         setDataBukuAPI(data);
@@ -27,13 +29,19 @@ export default function BookDetail({ route, navigation }) {
     fetchDataBuku();
   }, []);
 
-  const handleBookmark = () => {
-    const updatedDataBuku = dataBukuAPI.map(book => {
-      if (book.id === item.id) {
-        return { ...book, isBookmarked: !book.isBookmarked };
-      }
-      return book;
+  useEffect(() => {
+    selectBookmark((bookmarkData) => {
+      const isBookmarked = bookmarkData.some(book => book.id === item.id);
+      setIsBookmarked(isBookmarked);
     });
+  }, []);
+
+  const handleBookmark = () => {
+    if (isBookmarked) {
+      removeBookmark(item.id);
+    } else {
+      insertBookmark(item.id, item.cover, item.judul);
+    }
     setIsBookmarked(!isBookmarked);
   };
 
@@ -46,104 +54,32 @@ export default function BookDetail({ route, navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
+    <View style={bkdtlStyles.container}>
+      <View style={bkdtlStyles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={bkdtlStyles.iconButton}>
           <FontAwesome name="arrow-left" size={20} color={Colors.gray} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleBookmark} style={styles.iconButton}>
+        <TouchableOpacity onPress={handleBookmark} style={bkdtlStyles.iconButton}>
           <FontAwesome name={isBookmarked ? "bookmark" : "bookmark-o"} size={20} color={isBookmarked ? Colors.yellow : Colors.gray} />
         </TouchableOpacity>
       </View>
-      <ScrollView vertical style={styles.scrollView}>
+      <ScrollView vertical style={bkdtlStyles.scrollView}>
         <Image 
-          source={{ uri: item.cover }}
-          style={styles.image}
+          source={{ uri: dataBukuAPI.cover }}
+          style={bkdtlStyles.image}
         />
-        <View style={styles.detailsContainer}>
-          <Text style={styles.title}>{item.judul}</Text>
-          <Text style={styles.price}>Rp {item.harga}</Text>
-          <Text style={styles.synopsisTitle}>Synopsis</Text>
-          <Text style={styles.synopsisText}>{item.sinopsis}</Text>
-          <Text style={styles.synopsisTitle}>kategori</Text>
-          <Text style={styles.genre}>{item.kategori.join(', ')}</Text>
+        <View style={bkdtlStyles.detailsContainer}>
+          <Text style={bkdtlStyles.title}>{dataBukuAPI.judul}</Text>
+          <Text style={bkdtlStyles.price}>Rp {dataBukuAPI.harga}</Text>
+          <Text style={bkdtlStyles.synopsisTitle}>Synopsis</Text>
+          <Text style={bkdtlStyles.synopsisText}>{dataBukuAPI.sinopsis}</Text>
+          <Text style={bkdtlStyles.synopsisTitle}>kategori</Text>
+          <Text style={bkdtlStyles.genre}>{dataBukuAPI.kategori.join(', ')}</Text>
         </View>
       </ScrollView>
-      <TouchableOpacity onPress={handleAddToCart} style={styles.addButton}>
-        <Text style={styles.addButtonText}>Add to Cart</Text>
+      <TouchableOpacity onPress={handleAddToCart} style={bkdtlStyles.addButton}>
+        <Text style={bkdtlStyles.addButtonText}>Add to Cart</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    position: 'absolute',
-    top: 20,
-    left: 10,
-    right: 10,
-    zIndex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  iconButton: {
-    padding: 5,
-  },
-  scrollView: {
-    flex: 1,
-    marginBottom: 50,
-  },
-  image: {
-    width: '100%',
-    height: 500,
-    marginBottom: 20,
-    marginTop: 10,
-    borderRadius: 15,
-  },
-  detailsContainer: {
-    backgroundColor: Colors.white,
-    paddingHorizontal: 20,
-    paddingTop: 10,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  genre: {
-    fontSize: 18,
-    fontStyle: 'bold',
-    marginBottom: 10,
-  },
-  synopsisTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  synopsisText: {
-    marginBottom: 10,
-    textAlign: 'justify',
-  },
-  price: {
-    marginBottom: 10,
-    fontWeight: 'bold',
-  },
-  addButton: {
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    right: 10,
-    backgroundColor: Colors.yellow,
-    padding: 5,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  addButtonText: {
-    fontSize: 18,
-    color: Colors.white,
-  },
-});

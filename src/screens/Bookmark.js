@@ -1,78 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import MasonryList from '@react-native-seoul/masonry-list';
-import { dataBuku } from '../api';
+import { View, Text, Pressable, Image, StyleSheet } from 'react-native';
+import { selectBookmark } from '../database/index1';
+import { ctgrStyles } from '../components/Style';
+import BookDetail from './BookDetail';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Bookmark() {
+const Bookmark = () => {
+  const navigation = useNavigation();
   const [bookmarkedBooks, setBookmarkedBooks] = useState([]);
 
-  useEffect(() => {
-    const fetchBookmarkedBooks = () => {
-      dataBuku(data => {
-        const bookmarked = data.filter(book => book.isBookmarked);
-        setBookmarkedBooks(bookmarked);
-      });
-    };
+  const fetchBookmarkedBooks = () => {
+    selectBookmark((bookmarkData) => {
+      setBookmarkedBooks(bookmarkData);
+    });
+  };
 
-    fetchBookmarkedBooks();
-  }, []);
+  fetchBookmarkedBooks();
+
+  const handleImagePress = (item) => {
+    navigation.navigate('BookDetail', { item });
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.judul}>Bookmarked Books</Text>
-      <View style={styles.bookmarkListContainer}>
-        <MasonryList
-          data={bookmarkedBooks}
-          keyExtractor={(item) => item.id.toString()}
-          numColumns={2}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => (
-            <View style={styles.bookmarkItemContainer}>
-              <Image
-                source={{ uri: item.cover }}
-                style={styles.bookmarkImage}
-              />
-              <Text style={styles.bookmarkTitle}>
-                {item.judul}
-              </Text>
-            </View>
-          )}
-          onEndReachedThreshold={0.1}
-        />
+    <View style={ctgrStyles.container}>
+      <Text style={ctgrStyles.title}>
+        Bookmarked Books
+      </Text>
+      <View style={ctgrStyles.columnContainer}>
+        {bookmarkedBooks.map(item => (
+          <BookmarkCard key={item.id} item={item} onPress={() => handleImagePress(item)} />
+        ))}
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 10,
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: hp(3),
-    fontWeight: 'bold',
-  },
-  bookmarkListContainer: {
-    marginTop: 10,
-  },
-  bookmarkItemContainer: {
-    flex: 1,
-    marginTop: 5,
-    marginBottom: 10,
-    marginRight: 10,
-  },
-  bookmarkImage: {
-    width: '100%',
-    height: hp(35),
-    borderRadius: 15,
-    marginVertical: 5,
-  },
-  bookmarkTitle: {
-    textAlign: 'center',
-    marginTop: 1,
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-});
+const BookmarkCard = ({ item, onPress }) => {
+  return (
+    <Pressable onPress={() => onPress(item)} style={ctgrStyles.cardContainer}>
+      <View>
+        <Image
+          source={{ uri: item.cover }}
+          style={ctgrStyles.image}
+        />
+        <Text style={ctgrStyles.titleText}>
+          {item.judul}
+        </Text>
+      </View>
+    </Pressable>
+  );
+}
+
+export default Bookmark;
