@@ -215,7 +215,7 @@ export const bkdtlStyles = StyleSheet.create({
   },
   genre: {
     fontSize: 18,
-    fontStyle: 'bold',
+    fontWeight: 'bold',
     marginBottom: 10,
   },
   synopsisTitle: {

@@ -1,13 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Image, StyleSheet } from 'react-native';
+import { View, Text, Pressable, Image, StyleSheet, TextInput } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
-import { dataBuku } from '../api';
-import { ctgrStyles } from './Style';
+import { dataBuku, getBuku } from '../api';
+import { AntDesign } from '@expo/vector-icons';
+import Colors from '../assets/Colors/Colors';
+import { ctgrStyles,srchStyle } from './Style';
 
 const Categories = () => {
   const navigation = useNavigation();
   const [buku, setData] = useState([]);
+  const [searchKey, setKey] = useState('');
+
+  const searchBooks = () => {
+    var key = searchKey.trim();
+    var url = '';
+    if (key == '') {
+      dataBuku(data => {
+        if (data != 'message') {
+          setData(data);
+        } else {
+          setData(null);
+        }
+      });
+    } else {
+      getBuku(key, data => {
+        if (data != 'message') {
+          setData(data);
+        } else {
+          setData(null);
+        }
+      });
+    }
+  };
 
   useEffect(() => {
     dataBuku((data) => {
@@ -21,6 +46,15 @@ const Categories = () => {
 
   return (
     <View style={ctgrStyles.container}>
+      <View style={srchStyle.searchContainer}>
+        <AntDesign name="search1" size={24} color={Colors} />
+        <TextInput
+          placeholder='Search'
+          onChangeText={(value) => setKey(value)}
+          onSubmitEditing={searchBooks}
+          style={srchStyle.input}
+        />
+      </View>
       <Text style={ctgrStyles.title}>
         Most Popular
       </Text>

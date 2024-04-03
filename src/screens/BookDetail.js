@@ -14,7 +14,7 @@ export default function BookDetail({ route, navigation }) {
   useEffect(() => {
     const fetchDataBuku = async () => {
       try {
-        const response = await fetch("http://10.2.2.76:5127/buku/"+item.id);
+        const response = await fetch("http://10.2.15.46:5127/buku/"+item.id);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         } 

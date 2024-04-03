@@ -1,5 +1,5 @@
 function dataBuku(callback) {
-  fetch('http://10.2.2.76:5127/buku', {
+  fetch('http://10.2.15.46:5127/buku', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -14,8 +14,28 @@ function dataBuku(callback) {
     callback(data);
   }).catch(err => { console.log(err) });
 }
+function getBuku(key, callback) {
+  fetch(`http://10.2.15.46:5127/buku/cari/${key}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      callback(data);
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
+    });
+}
 
-export { dataBuku };
+export { dataBuku, getBuku } ;
 
 // export const bookData = [
 //     {
