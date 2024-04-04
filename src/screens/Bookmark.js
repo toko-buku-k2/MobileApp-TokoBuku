@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, Image, StyleSheet } from 'react-native';
 import { selectBookmark } from '../database/index1';
 import { ctgrStyles } from '../components/Style';
-import BookDetail from './BookDetail';
 import { useNavigation } from '@react-navigation/native';
 
 const Bookmark = () => {
@@ -24,7 +23,7 @@ const Bookmark = () => {
   return (
     <View style={ctgrStyles.container}>
       <Text style={ctgrStyles.title}>
-        Bookmarked Books
+        Bookmark List
       </Text>
       <View style={ctgrStyles.columnContainer}>
         {bookmarkedBooks.map(item => (
