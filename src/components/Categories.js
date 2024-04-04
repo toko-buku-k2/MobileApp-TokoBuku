@@ -49,7 +49,7 @@ const Categories = () => {
       <View style={srchStyle.searchContainer}>
         <AntDesign name="search1" size={24} color={Colors} />
         <TextInput
-          placeholder='Search'
+          placeholder='Cari buku....'
           onChangeText={(value) => setKey(value)}
           onSubmitEditing={searchBooks}
           style={srchStyle.input}
